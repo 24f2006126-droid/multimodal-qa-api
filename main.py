@@ -50,22 +50,32 @@ async def answer_image(payload: ImageQuestion):
             BytesIO(image_bytes)
         )
 
-        prompt = f"""
-You are an image question answering system.
+       prompt = f"""
+You are an expert document understanding AI.
 
-Extract the answer from the image.
+Analyze the image carefully. It may contain:
+- invoices
+- receipts
+- tables
+- charts
+- pie charts
+- academic documents
+
+Read all visible text, numbers, labels, and values.
+
+Answer the question using ONLY information visible in the image.
 
 Question:
 {payload.question}
 
 Rules:
-- Return ONLY the answer.
-- If the answer is numeric, return only the number.
-- Do not include currency symbols.
-- Do not include units.
-- Do not explain.
+- Return only the final answer.
+- Do not explain your reasoning.
+- If the answer is a number, return only the number.
+- Remove currency symbols and units.
+- Preserve decimal values exactly.
+- For charts, identify the correct category/value from the labels.
 """
-
         response = model.generate_content(
             [
                 prompt,
