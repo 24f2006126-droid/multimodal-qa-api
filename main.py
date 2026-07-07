@@ -29,7 +29,7 @@ genai.configure(
 )
 
 model = genai.GenerativeModel(
-    "gemini-2.5-flash"
+    "gemini-2.5-pro"
 )
 
 
@@ -51,9 +51,9 @@ async def answer_image(payload: ImageQuestion):
         )
 
         prompt = f"""
-You are an expert document understanding AI.
+You are a high-accuracy document OCR and visual question answering system.
 
-Analyze the image carefully. It may contain:
+The image may contain:
 - invoices
 - receipts
 - tables
@@ -61,20 +61,27 @@ Analyze the image carefully. It may contain:
 - pie charts
 - academic documents
 
-Read all visible text, numbers, labels, and values.
-
-Answer the question using ONLY information visible in the image.
+First read all visible text carefully.
+Pay special attention to:
+- totals
+- subtotals
+- tax values
+- percentages
+- category labels
+- numbers in tables
 
 Question:
 {payload.question}
 
-Rules:
-- Return only the final answer.
-- Do not explain your reasoning.
-- If the answer is a number, return only the number.
-- Remove currency symbols and units.
-- Preserve decimal values exactly.
-- For charts, identify the correct category/value from the labels.
+Instructions:
+- Answer only from information visible in the image.
+- Return ONLY the final answer.
+- No explanation.
+- No sentences.
+- If the answer is numeric, output only the number.
+- Do not include currency symbols.
+- Do not include units.
+- Keep decimal points exactly.
 """
         response = model.generate_content(
             [
