@@ -50,7 +50,7 @@ async def answer_image(payload: ImageQuestion):
             BytesIO(image_bytes)
         )
 
-       prompt = f"""
+        prompt = f"""
 You are an expert document understanding AI.
 
 Analyze the image carefully. It may contain:
